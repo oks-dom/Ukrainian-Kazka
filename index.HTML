@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <title>Казки українською для дітей</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #f9f9f9;
+      max-width: 800px;
+      margin: auto;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #2e7d32;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      margin-top: 1rem;
+      background-color: #81d4fa;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #4fc3f7;
+    }
+  </style>
+</head>
+<body>
+  <h1>Чарівна казка</h1>
+  <p id="story">
+    Одного разу, в чарівному лісі, жив собі маленький єнот на ім’я Макс. Він мріяв знайти чарівний камінь, який світиться в темряві. Макс вирушив у подорож, зустрічаючи на шляху нових друзів.
+  </p>
+  <button onclick="readStory()">🔊 Прочитати вголос</button>
+
+  <script>
+    function readStory() {
+      const text = document.getElementById("story").innerText;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "uk-UA";
+      speechSynthesis.speak(utterance);
+    }
+  </script>
+</body>
+</html>
