@@ -51,13 +51,12 @@
     <span data-start="14.5">зустрічаючи на шляху</span>
     <span data-start="16.0">нових друзів.</span>
   </div>
-  <button onclick="playAudio()">▶️ Слухати казку</button>
+ 
   <audio id="audioPlayer" controls>
     <source src="kazkaaudio.m4a" type="audio/mp4">
     Ваш браузер не підтримує аудіо.
   </audio>
-<button onclick="audioPlayer.pause()">⏸️ Пауза</button>
-<button onclick="audioPlayer.currentTime = 0">↩️ Спочатку</button>
+
   <script>
     const audio = document.getElementById('audioPlayer');
     const textSpans = document.querySelectorAll('#story span');
