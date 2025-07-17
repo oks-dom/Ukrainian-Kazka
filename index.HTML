@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Казки українською для дітей</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -31,9 +32,16 @@
       background-color: #FFF59D; /* Жовтий відтінок для підсвічування */
       transition: background-color 0.3s;
     }
+    .hover-highlight {
+      background-color: #E0E0E0; /* Сірий відтінок при наведенні */
+      transition: background-color 0.3s;
+    }
     #story span {
       display: inline-block;
       margin: 2px 0;
+      padding: 2px 4px;
+      border-radius: 3px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -43,7 +51,7 @@
     <span data-start="0">Одного разу,</span>
     <span data-start="1.5">в чарівному лісі,</span>
     <span data-start="3.0">жив собі маленький єнот</span>
-    <span data-start="5.0">на ім’я Макс.</span>
+    <span data-start="5.0">на ім'я Макс.</span>
     <span data-start="7.0">Він мріяв знайти</span>
     <span data-start="8.5">чарівний камінь,</span>
     <span data-start="10.0">який світиться в темряві.</span>
@@ -60,9 +68,11 @@
   <script>
     const audio = document.getElementById('audioPlayer');
     const textSpans = document.querySelectorAll('#story span');
+    let touchTimer = null;
 
-    // Функція для відтворення аудіо з підсвічуванням
-    function playAudio() {
+    // Функція для відтворення аудіо з певного моменту
+    function playFromTime(startTime) {
+      audio.currentTime = startTime;
       audio.play();
     }
 
@@ -86,6 +96,55 @@
     audio.addEventListener('ended', () => {
       textSpans.forEach(span => {
         span.classList.remove('highlight');
+      });
+    });
+
+    // Обробники подій для кожного фрагменту тексту
+    textSpans.forEach(span => {
+      const startTime = parseFloat(span.getAttribute('data-start'));
+      
+      // Для комп'ютерів (мишка)
+      span.addEventListener('mouseenter', () => {
+        span.classList.add('hover-highlight');
+      });
+      
+      span.addEventListener('mouseleave', () => {
+        span.classList.remove('hover-highlight');
+      });
+      
+      span.addEventListener('click', () => {
+        // Видаляємо жовте підсвічування з усіх елементів
+        textSpans.forEach(s => s.classList.remove('highlight'));
+        // Додаємо жовте підсвічування до поточного елементу
+        span.classList.add('highlight');
+        // Починаємо відтворення з цього моменту
+        playFromTime(startTime);
+      });
+      
+      // Для смартфонів (дотики)
+      span.addEventListener('touchstart', () => {
+        span.classList.add('hover-highlight');
+        touchTimer = setTimeout(() => {
+          span.classList.remove('hover-highlight');
+        }, 300);
+      });
+      
+      span.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        clearTimeout(touchTimer);
+        
+        if (!span.classList.contains('highlight')) {
+          // Перший тап - сіре підсвічування
+          span.classList.add('hover-highlight');
+          setTimeout(() => {
+            span.classList.remove('hover-highlight');
+          }, 1000);
+        } else {
+          // Другий тап - жовте підсвічування і відтворення
+          textSpans.forEach(s => s.classList.remove('highlight'));
+          span.classList.add('highlight');
+          playFromTime(startTime);
+        }
       });
     });
   </script>
