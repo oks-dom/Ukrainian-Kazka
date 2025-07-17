@@ -27,26 +27,67 @@
     button:hover {
       background-color: #4fc3f7;
     }
+    .highlight {
+      background-color: #FFF59D; /* Жовтий відтінок для підсвічування */
+      transition: background-color 0.3s;
+    }
+    #story span {
+      display: inline-block;
+      margin: 2px 0;
+    }
   </style>
 </head>
 <body>
   <h1>Чарівна казка</h1>
-  <p id="story">
-    Одного разу, в чарівному лісі, жив собі маленький єнот на ім’я Макс. Він мріяв знайти чарівний камінь, який світиться в темряві. Макс вирушив у подорож, зустрічаючи на шляху нових друзів.
-  </p>
-  <button onclick="readStory()">🔊 Прочитати вголос</button>
-<audio controls>
-  <source src="kazkaaudio.m4a" type="audio/mp4">
-  Ваш браузер не підтримує аудіо.
-</audio>
+  <div id="story">
+    <span data-start="0">Одного разу,</span>
+    <span data-start="1.5">в чарівному лісі,</span>
+    <span data-start="3.0">жив собі маленький єнот</span>
+    <span data-start="5.0">на ім’я Макс.</span>
+    <span data-start="7.0">Він мріяв знайти</span>
+    <span data-start="8.5">чарівний камінь,</span>
+    <span data-start="10.0">який світиться в темряві.</span>
+    <span data-start="12.5">Макс вирушив у подорож,</span>
+    <span data-start="14.5">зустрічаючи на шляху</span>
+    <span data-start="16.0">нових друзів.</span>
+  </div>
+  <button onclick="playAudio()">▶️ Слухати казку</button>
+  <audio id="audioPlayer" controls>
+    <source src="kazkaaudio.m4a" type="audio/mp4">
+    Ваш браузер не підтримує аудіо.
+  </audio>
 
   <script>
-    function readStory() {
-      const text = document.getElementById("story").innerText;
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "uk-UA";
-      speechSynthesis.speak(utterance);
+    const audio = document.getElementById('audioPlayer');
+    const textSpans = document.querySelectorAll('#story span');
+
+    // Функція для відтворення аудіо з підсвічуванням
+    function playAudio() {
+      audio.play();
     }
+
+    // Відстежуємо поточний час аудіо для підсвічування
+    audio.addEventListener('timeupdate', () => {
+      const currentTime = audio.currentTime;
+      
+      textSpans.forEach(span => {
+        const startTime = parseFloat(span.getAttribute('data-start'));
+        const duration = 1.5; // Приблизна тривалість фрази (сек)
+        
+        if (currentTime >= startTime && currentTime < startTime + duration) {
+          span.classList.add('highlight');
+        } else {
+          span.classList.remove('highlight');
+        }
+      });
+    });
+
+    // Скидаємо підсвічування, коли аудіо закінчилось
+    audio.addEventListener('ended', () => {
+      textSpans.forEach(span => {
+        span.classList.remove('highlight');
+      });
+    });
   </script>
 </body>
 </html>
