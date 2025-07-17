@@ -56,7 +56,8 @@
     <source src="kazkaaudio.m4a" type="audio/mp4">
     Ваш браузер не підтримує аудіо.
   </audio>
-
+<button onclick="audioPlayer.pause()">⏸️ Пауза</button>
+<button onclick="audioPlayer.currentTime = 0">↩️ Спочатку</button>
   <script>
     const audio = document.getElementById('audioPlayer');
     const textSpans = document.querySelectorAll('#story span');
