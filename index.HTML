@@ -61,6 +61,28 @@
   </div>
 
 <img src="enotKazka.png" alt="Казковий ліс із єнотом" style="max-width: 25%; height: auto; border-radius: 12px;">
+<img id="storybookImage"
+     src="A_digital_painting_in_a_semi-realistic,_storybook_.png"
+     alt="Казковий ліс із єнотом"
+     style="max-width: 25%; height: auto; border-radius: 12px; cursor: pointer; transition: max-width 0.5s ease;" 
+     onclick="toggleImageSize()">
+
+<script>
+  let isExpanded = false;
+
+  function toggleImageSize() {
+    const img = document.getElementById("storybookImage");
+
+    if (!isExpanded) {
+      img.style.maxWidth = "100%";
+    } else {
+      img.style.maxWidth = "25%";
+    }
+
+    isExpanded = !isExpanded;
+  }
+</script>
+
 
 <audio id="audioPlayer" controls>
     <source src="kazkaaudio.m4a" type="audio/mp4">
